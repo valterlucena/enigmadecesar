@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -35,6 +36,7 @@ string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?
 string respostasFacil[10] = {"balanca", "caldo", "piolho", "mae", "cama", "pe", "costa", "vela", "alho", "lapis"};
 string alfa = "abcdefghijklmnopqrstuvwxyz";
 
+string palavrasFacil[10] = {"sob", "vil", "fel", "ceu", "mal", "ver", "ser", "reu", "vao", "paz"};
 void telaInicial();
 void regras();
 void jogar();
@@ -44,16 +46,19 @@ string escolheFraseFacil();
 void imprimeCharadaFacil();
 string crip(string frase, int chave);
 string descrip(string frase, int chave);
+void mostrarPalavras();
+int escolherPalavra();
+bool verificarResposta(string palavraCriptografada, string resposta, int chave);
 
 int main() {
     telaInicial();
     int opcao;
 	cin >> opcao;
-	
+
 	if (opcao == 1) {
 		regras();
-	} 
-	
+	}
+
 	if (opcao == 2) {
 		jogar();
 	}
@@ -91,7 +96,7 @@ int limiteIndice() {
 	while (indice >= 10) {
 		indice = indiceRandomico();
 	}
-	
+
 	return indice;
 }
 
@@ -101,7 +106,7 @@ string escolheFraseFacil() {
 }
 
 void imprimeCharadaFacil() {
-	cout << crip(escolheFraseFacil(), limiteIndice());
+	cout << crip(escolheFraseFacil(), limiteIndice()) << endl;
 	//cout << escolheFraseFacil();
 }
 
@@ -111,7 +116,7 @@ void regras() {
 
 // Refatorar o codigo crip e descrip
 string crip(string frase, int chave) {
-	
+
 	string rest = "";
 	for (int i = 0; i < frase.size(); i++) {
 		for (int j = 0; j < alfa.size(); j++) {
@@ -121,16 +126,16 @@ string crip(string frase, int chave) {
 				} else {
 					frase[i] = alfa[j + chave];
 				}
-				
+
 				j = 0;
 				break;
 			}
 		}
 		rest += frase[i];
 	}
-	
+
 	return rest;
-} 
+}
 
 
 string descrip(string frase, int chave) {
@@ -143,18 +148,53 @@ string descrip(string frase, int chave) {
 				} else {
 					frase[i] = alfa[j - chave];
 				}
-				
+
 				j = 0;
 				break;
 			}
 		}
 		rest += frase[i];
 	}
-	
+
 	return rest;
 }
 
 void jogar() {
 	imprimeCharadaFacil();
+	mostrarPalavras();
+}
+
+void mostrarPalavras(){
+    string resposta;
+    int chave = limiteIndice();
+    int j = escolherPalavra();
+    cout << "Descifre as palavras abaixo! (Dica: chave = " << chave << ")" << endl;
+    for(int i = 1; i <= 3; i ++){
+        cout << i <<")" << crip(palavrasFacil[j],chave)<< endl;
+        cout << "Resposta:" << endl;
+        cin >> resposta;
+        if(verificarResposta(palavrasFacil[j], resposta, chave)){
+            cout << "Acertou!" << endl;
+        }
+        j++;
+    }
+}
+
+int escolherPalavra(){
+    int i = limiteIndice();
+    if(i >7){
+        i = limiteIndice();
+    }
+    return i;
+}
+
+
+bool verificarResposta(string palavraCriptografada, string resposta, int chave){
+    string palavrasDescriptografada = descrip(palavraCriptografada,chave);
+    if(palavrasDescriptografada.compare(resposta) == 0){
+        return true;
+    }else{
+        return false;
+    }
 }
 

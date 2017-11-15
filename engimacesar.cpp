@@ -6,7 +6,7 @@
 
 using namespace std;
 
-/*
+/**
     ENIGMA DE CESAR
     APLICACOES DE PARADIGMAS DE LINGUAGEM DE PROGRAMACAO - 2017.2 - UFCG
     EQUIPE: ALICE FERNANDES
@@ -14,13 +14,8 @@ using namespace std;
             IVYNA ALVES
             THAIS TOSCANO
             VALTER LUCENA
-*/
+**/
 
-
-// Falta ver se aceita chave 0 de deslocamento!
-// Falta banco de perguntas-charadas medio e dificil!
-
-// Banco de perguntas-charadas
 string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?",
 "o que detestamos na praia e adoramos na panela?",
 "o que eh que anda com os pe na cabeca?",
@@ -32,11 +27,11 @@ string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?
 "tem cabeca e nao eh gente, tem dente e nao eh pente?",
 "o que eh que nasce grande e morre pequeno?"};
 
-// Respostas das perguntas-charadas
 string respostasFacil[10] = {"balanca", "caldo", "piolho", "mae", "cama", "pe", "costa", "vela", "alho", "lapis"};
 string alfa = "abcdefghijklmnopqrstuvwxyz";
 
 string palavrasFacil[10] = {"sob", "vil", "fel", "ceu", "mal", "ver", "ser", "reu", "vao", "paz"};
+
 void telaInicial();
 void regras();
 void jogar();
@@ -47,8 +42,14 @@ void imprimeCharadaFacil();
 string crip(string frase, int chave);
 string descrip(string frase, int chave);
 void mostrarPalavras();
-int escolherPalavra();
-bool verificarResposta(string palavraCriptografada, string resposta, int chave);
+int escolhePalavraFacil();
+bool verificarResposta(string str1, string str2);
+string exibirParteFrase(string fraseCrip, int comeco, int fim);
+void imprimeCharadas(int i, int j, string charada, int chave);
+string recebeEntradaUsuario(string resposta);
+
+int lim = limiteIndice();
+string fraseCrip = escolheFraseFacil();
 
 int main() {
     telaInicial();
@@ -87,7 +88,6 @@ void telaInicial() {
 
 int indiceRandomico() {
 	srand(time(NULL));
-	//numero provisorio
 	return rand()%29;
 }
 
@@ -96,12 +96,11 @@ int limiteIndice() {
 	while (indice >= 10) {
 		indice = indiceRandomico();
 	}
-
 	return indice;
 }
 
+
 string escolheFraseFacil() {
-	int lim = limiteIndice();
  	string saida = perguntasFacil[lim];
   	return saida;
 }
@@ -112,19 +111,17 @@ int limiteChave() {
  		chave = indiceRandomico();
  	}
  	return chave;
- }
+}
 
 void imprimeCharadaFacil() {
 	int ch = limiteChave();
- 	cout << crip(escolheFraseFacil(), ch) << endl;
- 	cout << descrip(escolheFraseFacil(), ch) << endl;
+ 	cout << crip(fraseCrip, ch) << endl;
 }
 
 void regras() {
 	cout << "Escrever regras";
 }
 
-// Refatorar o codigo crip e descrip
 string crip(string frase, int chave) {
 
 	string rest = "";
@@ -143,7 +140,6 @@ string crip(string frase, int chave) {
 		}
 		rest += frase[i];
 	}
-
 	return rest;
 }
 
@@ -158,14 +154,12 @@ string descrip(string frase, int chave) {
 				} else {
 					frase[i] = alfa[j - chave];
 				}
-
 				j = 0;
 				break;
 			}
 		}
 		rest += frase[i];
 	}
-
 	return rest;
 }
 
@@ -175,25 +169,44 @@ void jogar() {
 }
 
 void mostrarPalavras(){
-    string resposta;
+    string respostaCharada;
+    string respostaDaFrase;
     int chave = limiteChave();
-    int j = escolherPalavra();
+    int j = escolhePalavraFacil();
+    int comeco = 0;
+    int divisao = fraseCrip.size() / 3;
+    int fim = divisao;
+
     cout << "Descifre as palavras abaixo! (Dica: chave = " << chave << ")" << endl;
+
     for(int i = 1; i <= 3; i ++){
-
-        cout << i <<")" << crip(palavrasFacil[j],chave)<< endl;
-        cout << "Resposta:" << endl;
-        cin >> resposta;
-        cout << descrip(palavrasFacil[j], chave) << endl;
-
-        if(verificarResposta(palavrasFacil[j], resposta, chave)){
+        string charada = palavrasFacil[j];
+        imprimeCharadas(i, j, charada,chave);
+        respostaCharada = recebeEntradaUsuario(respostaCharada);
+        if(verificarResposta(descrip(charada, chave), respostaCharada)){
             cout << "Acertou!" << endl;
+            cout << exibirParteFrase(fraseCrip, comeco, fim) << endl;
+        }
+
+        comeco = fim + 1;
+        fim = comeco + divisao;
+        if(fim >= fraseCrip.size()){
+            fim = fraseCrip.size() - 1;
+        }
+        if(comeco >= fraseCrip.size()){
+            comeco = fraseCrip.size() - 1;
         }
         j++;
     }
+
+    cout << fraseCrip << endl;
+    respostaDaFrase = recebeEntradaUsuario(respostaDaFrase);
+    if(verificarResposta(respostaDaFrase,respostasFacil[lim])){
+        cout << "Passar nivel";
+    }
 }
 
-int escolherPalavra(){
+int escolhePalavraFacil(){
     int i = limiteIndice();
     if(i > 7){
         i = limiteIndice();
@@ -201,15 +214,35 @@ int escolherPalavra(){
     return i;
 }
 
-
-bool verificarResposta(string palavraCrip, string resposta, int chave){
-    string palavrasDescrip = descrip(palavraCrip,chave);
-    if(palavrasDescrip.compare(resposta) == 0){
+bool verificarResposta(string str1, string str2){
+    if(str1.compare(str2) == 0){
         return true;
     }else{
         return false;
     }
 }
+
+string exibirParteFrase(string frase, int comeco, int fim){
+    string parteCrip = "";
+    for(int i = comeco; i <= fim; i ++){
+        parteCrip = parteCrip + fraseCrip[i];
+    }
+    return parteCrip;
+}
+
+void imprimeCharadas(int i, int j, string charada, int chave){
+    cout << i <<")" << crip(palavrasFacil[j],chave)<< endl;
+}
+
+string recebeEntradaUsuario(string resposta){
+    cout << "Resposta:" << endl;
+    cin >> resposta;
+    return resposta;
+}
+
+
+
+
 
 
 

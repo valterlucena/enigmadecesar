@@ -16,6 +16,8 @@ using namespace std;
             VALTER LUCENA
 **/
 
+string alfa = "abcdefghijklmnopqrstuvwxyz";
+
 string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?",
                              "o que detestamos na praia e adoramos na panela?",
                              "o que eh que anda com os pe na cabeca?",
@@ -27,23 +29,51 @@ string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?
                              "tem cabeca e nao eh gente, tem dente e nao eh pente?",
                              "o que eh que nasce grande e morre pequeno?"
                             };
-
 string respostasFacil[10] = {"balanca", "caldo", "piolho", "mae", "cama", "pe", "costa", "vela", "alho", "lapis"};
-string alfa = "abcdefghijklmnopqrstuvwxyz";
-
 string palavrasFacil[10] = {"sob", "vil", "fel", "ceu", "mal", "ver", "ser", "reu", "vao", "paz"};
+
+string perguntasMedio[10] = { "eh nome de mulher e nome de homem. ia mas acabou nao indo?",
+                              "quem inventou a fila?",
+                              "na televisao cobre um pais; no futebol, atrai a bola; em casa incentiva o lazer. O que eh?",
+                              "o que eh que se poes na mesa, parte, reparte mas nao se come?",
+                              "dois vizinhos. um nao vai a casa do outro e os dois nao se veem por causa de um morrinho? Quem sao eles?",
+                              "o que eh, o que eh? do tamanho de uma bolota e enche a casa ate a porta?",
+                              "o que e que quanto mais rugas tem mais novo eh?",
+                              "o que eh, o que eh,se voce mudar uma letra em meu nome, ira aparecer o nome do animal que eh meu maior inimigo",
+                              "qual a coisa mais veloz do mundo?",
+                              "o que eh que corre em volta do pasto inteiro sem se mexer?"
+                              };
+string respostasMedio[10] = {"isaias","formiga","rede","baralho","olhos","luz","pneu","rato","pensamento","cerca"};
+string palavrasMedio[10] = {"empafia", "sensato", "preciso", "morbido", "despota", "alegria", "mitigar", "exilado", "ansioso", "ambicao"};
+
+string perguntasDificil[10] = { "qual a cidade sulamericana que pende nos galhos da arvore?",
+                                "tem coroa, mas nao eh rei, tem raiz, mas nao eh planta?",
+                                "o que eh, o que eh, nao tem pe e corre, tem leito e nao dorme, quando para,morre?",
+                                "o que eh o que eh, uma caixinha de bom parecer, nao ha carpinteiro que saiba fazer?",
+                                "o que eh, o que eh? que nao se come, mas eh bom para se comer?",
+                                "o que eh, o que eh? que mesmo atravessando o rio, consegue nao se molhar?",
+                                "o que eh o que eh: nao tem olhos, mas pisca, nao tem boca, mas comanda?",
+                                "o que eh o que eh: quanto mais eu tiro mais eu tenho?",
+                                "o que eh que anda com a barriga para tras?",
+                                "o que eh, o que eh? me diga se for capaz. me diga quem eh aquele que num instante se quebra se alguem diz o nome dele?"
+                              };
+string respostasDificil[10] = {"lima","dente","rio","noz","talher","ponte","semaforo","fotografias","perna","silencio"};
+string palavrasDificil[10] = {"perspectiva", "significado", "dissimulado", "complacente", "vicissitude", "compreensao", "resiliencia", "contundente", "contingente", "expectativa"};
 
 void telaInicial();
 void regras();
 void jogar();
 int indiceRandomico();
 int limiteIndice();
-string escolheFraseFacil();
-void imprimeCharadaFacil();
+int nivel = 0;
+string escolheFrase();
+void imprimeCharada();
 string crip(string frase, int chave);
 string descrip(string frase, int chave);
 void mostrarPalavras();
 int escolhePalavraFacil();
+int escolhePalavraMedio();
+int escolhePalavraDificil();
 bool verificarResposta(string str1, string str2);
 string exibirParteFrase(string fraseCrip, int comeco, int fim);
 void imprimePalavrasCrip(int i, int j, string charada, int chave);
@@ -51,8 +81,7 @@ string recebeEntradaUsuario(string resposta);
 void verificaRespostaDaCharada(string respostaUsuario, string respostaCharada);
 
 int lim = limiteIndice();
-string fraseCrip = escolheFraseFacil();
-
+string fraseCrip = escolheFrase();
 int main()
 {
     telaInicial();
@@ -108,10 +137,19 @@ int limiteIndice()
     return indice;
 }
 
-
-string escolheFraseFacil()
+/* verificacao de nivel para escolha de frases
+vini sugeriu deixar o conjunto de frases como um so
+*/
+string escolheFrase()
 {
-    string saida = perguntasFacil[lim];
+    string saida = "";
+    if(nivel == 0){
+        saida = perguntasFacil[lim];
+    }else if(nivel == 1){
+        saida = perguntasMedio[lim];
+    }else if (nivel == 2){
+        saida = perguntasDificil[lim];
+    }
     return saida;
 }
 
@@ -125,10 +163,11 @@ int limiteChave()
     return chave;
 }
 
-void imprimeCharadaFacil()
+void imprimeCharada()
 {
     int ch = limiteChave();
     cout << crip(fraseCrip, ch) << endl;
+
 }
 
 void regras()
@@ -193,55 +232,57 @@ string descrip(string frase, int chave)
 
 void jogar()
 {
-    imprimeCharadaFacil();
+    imprimeCharada();
     mostrarPalavras();
 }
 
+//verificacao de nivel, tentar reduzir o codigo
 void mostrarPalavras()
 {
-    string respostaPalavraUsuario;
-    string respostaDaCharadaUsuario;
-    int chave = limiteChave();
-    int j = escolhePalavraFacil();
-    int comeco = 0;
-    int divisao = fraseCrip.size() / 3;
-    int fim = divisao;
+    if(nivel == 0){
+        string respostaPalavraUsuario;
+        string respostaDaCharadaUsuario;
+        int chave = limiteChave();
+        int j = escolhePalavraFacil();
+        int comeco = 0;
+        int divisao = fraseCrip.size() / 3;
+        int fim = divisao;
 
-    cout << "Descifre as palavras abaixo! (Dica: chave = " << chave << ")" << endl;
+        cout << "Descifre as palavras abaixo! (Dica: chave = " << chave << ")" << endl;
 
-    int i = 1;
-    int k = 0;
-    while(i <= 3){
-        string palavra = palavrasFacil[j];
-        imprimePalavrasCrip(i, j, palavra,chave);
-        cout << descrip(palavra, chave) << endl;
-        respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
-
+        int i = 1;
         int k = 0;
-        int decisao = 0;
-        bool respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
-        while(k < 3){
-            if(respostaCorreta){
-                cout << "Acertou!" << endl;
-                cout << exibirParteFrase(fraseCrip, comeco, fim) << endl;
-                break;
-            }else{
-                cout << "Tente outra vez!!!" << endl;
-                respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
-                respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
-                k++;
-            }
+        while(i <= 3){
+            string palavra = palavrasFacil[j];
+            imprimePalavrasCrip(i, j, palavra,chave);
+            cout << descrip(palavra, chave) << endl;
+            respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
 
-            if( k == 3 && !respostaCorreta){
-            cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
-            cin >> decisao;
-            if(decisao == 1){
-                    jogar();
-            }else{
-                exit(0);
-            }
-            }
+            int k = 0;
+            int decisao = 0;
+            bool respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
+            while(k < 3){
+                if(respostaCorreta){
+                    cout << "Acertou!" << endl;
+                    cout << exibirParteFrase(fraseCrip, comeco, fim) << endl;
+                    break;
+                }else{
+                    cout << "Tente outra vez!!!" << endl;
+                    respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
+                    respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
+                    k++;
+                }
 
+                if( k == 3 && !respostaCorreta){
+                    cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
+                    cin >> decisao;
+                    if(decisao == 1){
+                            jogar();
+                    }else{
+                        exit(0);
+                    }
+                }
+            }
         }
 
         comeco = fim + 1;
@@ -254,14 +295,156 @@ void mostrarPalavras()
         }
         i++;
         j++;
-    }
 
-    cout << fraseCrip << endl;
-    respostaDaCharadaUsuario = recebeEntradaUsuario(respostaDaCharadaUsuario);
-    verificaRespostaDaCharada(respostaDaCharadaUsuario, respostasFacil[lim]);
+        cout << fraseCrip << endl;
+        respostaDaCharadaUsuario = recebeEntradaUsuario(respostaDaCharadaUsuario);
+        verificaRespostaDaCharada(respostaDaCharadaUsuario, respostasFacil[lim]);
+
+    }else if(nivel == 1){
+        string respostaPalavraUsuario;
+        string respostaDaCharadaUsuario;
+        int chave = limiteChave();
+        int j = escolhePalavraMedio();
+        int comeco = 0;
+        int divisao = fraseCrip.size() / 3;
+        int fim = divisao;
+
+        cout << "Descifre as palavras abaixo! (Dica: chave = " << chave << ")" << endl;
+
+        int i = 1;
+        int k = 0;
+        while(i <= 3){
+            string palavra = palavrasMedio[j];
+            imprimePalavrasCrip(i, j, palavra,chave);
+            cout << descrip(palavra, chave) << endl;
+            respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
+
+            int k = 0;
+            int decisao = 0;
+            bool respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
+            while(k < 3){
+                if(respostaCorreta){
+                    cout << "Acertou!" << endl;
+                    cout << exibirParteFrase(fraseCrip, comeco, fim) << endl;
+                    break;
+                }else{
+                    cout << "Tente outra vez!!!" << endl;
+                    respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
+                    respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
+                    k++;
+                }
+
+                if( k == 3 && !respostaCorreta){
+                    cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
+                    cin >> decisao;
+                    if(decisao == 1){
+                            jogar();
+                    }else{
+                        exit(0);
+                    }
+                }
+            }
+        }
+
+            comeco = fim + 1;
+            fim = comeco + divisao;
+            if(fim >= fraseCrip.size()){
+                fim = fraseCrip.size() - 1;
+            }
+            if(comeco >= fraseCrip.size()){
+                comeco = fraseCrip.size() - 1;
+            }
+            i++;
+            j++;
+
+            cout << fraseCrip << endl;
+            respostaDaCharadaUsuario = recebeEntradaUsuario(respostaDaCharadaUsuario);
+            verificaRespostaDaCharada(respostaDaCharadaUsuario, respostasMedio[lim]);
+    }else if(nivel == 2){
+
+        string respostaPalavraUsuario;
+        string respostaDaCharadaUsuario;
+        int chave = limiteChave();
+        int j = escolhePalavraDificil();
+        int comeco = 0;
+        int divisao = fraseCrip.size() / 3;
+        int fim = divisao;
+
+        cout << "Descifre as palavras abaixo! (Dica: chave = " << chave << ")" << endl;
+
+        int i = 1;
+        int k = 0;
+        while(i <= 3){
+            string palavra = palavrasDificil[j];
+            imprimePalavrasCrip(i, j, palavra,chave);
+            cout << descrip(palavra, chave) << endl;
+            respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
+
+            int k = 0;
+            int decisao = 0;
+            bool respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
+            while(k < 3){
+                if(respostaCorreta){
+                    cout << "Acertou!" << endl;
+                    cout << exibirParteFrase(fraseCrip, comeco, fim) << endl;
+                    break;
+                }else{
+                    cout << "Tente outra vez!!!" << endl;
+                    respostaPalavraUsuario = recebeEntradaUsuario(respostaPalavraUsuario);
+                    respostaCorreta = verificarResposta(descrip(palavra, chave), respostaPalavraUsuario);
+                    k++;
+                }
+
+                if( k == 3 && !respostaCorreta){
+                    cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
+                    cin >> decisao;
+                    if(decisao == 1){
+                            jogar();
+                    }else{
+                        exit(0);
+                    }
+                }
+            }
+        }
+
+            comeco = fim + 1;
+            fim = comeco + divisao;
+            if(fim >= fraseCrip.size()){
+                fim = fraseCrip.size() - 1;
+            }
+            if(comeco >= fraseCrip.size()){
+                comeco = fraseCrip.size() - 1;
+            }
+            i++;
+            j++;
+
+            cout << fraseCrip << endl;
+            respostaDaCharadaUsuario = recebeEntradaUsuario(respostaDaCharadaUsuario);
+            verificaRespostaDaCharada(respostaDaCharadaUsuario, respostasDificil[lim]);
+    }
 }
 
 int escolhePalavraFacil()
+{
+    int i = limiteIndice();
+    if(i > 7)
+    {
+        i = limiteIndice();
+    }
+    return i;
+}
+// esta igual ao palavra facil pois nao entendi como faz
+int escolhePalavraMedio()
+{
+    int i = limiteIndice();
+    if(i > 7)
+    {
+        i = limiteIndice();
+    }
+    return i;
+}
+// esta igual ao palavra facil pois nao entendi como faz
+int escolhePalavraDificil()
 {
     int i = limiteIndice();
     if(i > 7)
@@ -283,6 +466,7 @@ bool verificarResposta(string str1, string str2)
     }
 }
 
+//nao entendi essa parte,onde ta sendo usado string frase?
 string exibirParteFrase(string frase, int comeco, int fim)
 {
     string parteCrip = "";
@@ -293,9 +477,20 @@ string exibirParteFrase(string frase, int comeco, int fim)
     return parteCrip;
 }
 
+/*
+    verificacao de chamada de nivel
+    antes era apenas com palavrasFacil
+*/
 void imprimePalavrasCrip(int i, int j, string charada, int chave)
 {
-    cout << i <<")" << crip(palavrasFacil[j],chave)<< endl;
+    if(nivel == 0){
+        cout << i <<")" << crip(palavrasFacil[j],chave)<< endl;
+    }else if(nivel == 1){
+        cout << i <<")" << crip(palavrasMedio[j],chave)<< endl;
+    }else if(nivel == 2){
+        cout << i <<")" << crip(palavrasDificil[j],chave)<< endl;
+    }
+
 }
 
 string recebeEntradaUsuario(string resposta)
@@ -305,11 +500,15 @@ string recebeEntradaUsuario(string resposta)
     return resposta;
 }
 
+
+//incrementando nivel
+
 void verificaRespostaDaCharada(string respostaUsuario, string respostaCharada){
     int k = 0;
     bool respostaCorreta = verificarResposta(respostaUsuario,respostaCharada);
     while(k < 3){
         if(respostaCorreta){
+            nivel += 1;
             cout << "Passar nivel" << endl;
             break;
         }else{
@@ -331,8 +530,6 @@ void verificaRespostaDaCharada(string respostaUsuario, string respostaCharada){
     }
     }
 }
-
-
 
 
 

@@ -244,7 +244,7 @@ void regras() {
 
 int indiceRandomico()
 {
-    srand(time(NULL));
+    //srand(time(NULL));
     return rand()%31;
 }
 
@@ -253,49 +253,6 @@ int indiceRandomico()
 **/
 bool verificaUltimoIndice(int index) {
     return index == ultimoIndice;
-}
-
-int limiteIndice()
-{
-    int indice = indiceRandomico();
-    while (indice >= 10)
-    {
-        indice = indiceRandomico();
-    }
-    return indice;
-}
-
-/* verificacao de nivel para escolha de frases
-vini sugeriu deixar o conjunto de frases como um so
-*/
-string escolheFrase()
-{
-    string saida = "";
-    if(nivel == 0){
-        saida = perguntasFacil[lim];
-    }else if(nivel == 1){
-        saida = perguntasMedio[lim];
-    }else if (nivel == 2){
-        saida = perguntasDificil[lim];
-    }
-    return saida;
-}
-
-int limiteChave()
-{
-    int chave = indiceRandomico();
-    while (chave >= 26)
-    {
-        chave = indiceRandomico();
-    }
-    return chave;
-}
-
-void imprimeCharada()
-{
-    int ch = limiteChave();
-    cout << crip(fraseCrip, ch) << endl;
-
 }
 
 /**
@@ -359,6 +316,89 @@ string descrip(string frase, int chave)
     }
     return rest;
 }
+
+/**
+    Seleciona o indice da charada que sera exibida ao usuario
+**/
+int limiteIndice(){
+    int indice = indiceRandomico();
+    while (indice >= 30 || verificaUltimoIndice(indice)){
+        indice = indiceRandomico();
+    }
+    ultimoIndice = indice;
+    return indice;
+}
+
+/**
+    Seleciona o valor da chave que sera utilizada na criptografia
+**/
+int limiteChave() {
+    int chave = indiceRandomico();
+    while (chave >= 5 || chave == 0){
+        chave = indiceRandomico();
+    }
+    return chave;
+}
+
+/**
+    Seleciona o indice da palavra a partir do nivel que sera usada para descriptografar a charada
+**/
+int indicePalavra(int nivel) {
+    int index;
+    if (nivel == 1) {
+        index = indiceRandomico() % (sizeof(palavrasFacil) / sizeof(palavrasFacil[0]));
+    } else if (nivel == 2) {
+        index = indiceRandomico() % (sizeof(palavrasMedio) / sizeof(palavrasMedio[0]));
+    } else {
+        index = indiceRandomico() % (sizeof(palavrasDificil) / sizeof(palavrasDificil[0]));
+    }
+
+    return index;
+}
+
+
+/**
+    Seleciona a palavra a ser usada para descriptografar a charada
+**/
+string escolhePalavra(int nivel) {
+    string palavra;
+    if (nivel == 1) {
+        palavra = palavrasFacil[indicePalavra(1)];
+    } else if (nivel == 2) {
+        palavra = palavrasMedio[indicePalavra(2)];
+    } else {
+        palavra = palavrasDificil[indicePalavra(3)];
+    }
+    return palavra;
+}
+
+
+string mergeStrings(string inicio, string fim) {
+    return inicio + fim;
+}
+
+int NIVEL = 1;
+int limite = limiteChave();
+int indiceCharada = limiteIndice();
+string charada = charadas[indiceCharada];
+string charadaCrip = crip(charada, limite);
+string alfaDica = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
+
+/**
+    Exibe a charada
+**/
+void exibeCharadaCriptografada(){
+    cout << endl << charadaCrip << endl;
+}
+
+bool comparaString(string str1, string str2){
+    if(str1.compare(str2) == 0){
+        return true;
+    }else{
+        return false;
+    };
+}
+
 void jogar()
 {
     imprimeCharada();

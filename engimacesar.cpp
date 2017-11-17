@@ -204,7 +204,7 @@ void regras() {
 int indiceRandomico()
 {
     //srand(time(NULL));
-    return rand()%31;
+    return rand()%101;
 }
 
 /**
@@ -281,7 +281,7 @@ string descrip(string frase, int chave)
 **/
 int limiteIndice(){
     int indice = indiceRandomico();
-    while (indice >= 30 || verificaUltimoIndice(indice)){
+    while (verificaUltimoIndice(indice)){
         indice = indiceRandomico();
     }
     ultimoIndice = indice;
@@ -292,8 +292,8 @@ int limiteIndice(){
     Seleciona o valor da chave que sera utilizada na criptografia
 **/
 int limiteChave() {
-    int chave = indiceRandomico();
-    while (chave >= 5 || chave == 0){
+    int chave = indiceRandomico()%5;
+    while (chave == 0){
         chave = indiceRandomico();
     }
     return chave;
@@ -368,7 +368,7 @@ void exibePalavras(){
 	cout << "       alfabeto = " << alfaDica << endl;
 
     int i = 0;
-    int fim = charada.size() - 1;
+    int fim = charada.size();
     while(i < 3){
     	int pedaco = (i + 1) * (charada.size() / 3);
         palavra = escolhePalavra(NIVEL);
@@ -380,7 +380,7 @@ void exibePalavras(){
 
         bool verificaResposta = comparaString(resposta, palavra);
         if (verificaResposta) {
-            cout << mergeStrings(charada.substr(0, pedaco), charadaCrip.substr(pedaco + 1, fim)) << endl;
+            cout << mergeStrings(charada.substr(0, pedaco), charadaCrip.substr(pedaco, fim)) << endl;
         } else {
             cout << "Tente outra vez!!!" << endl;
             int chances = 0;
@@ -389,7 +389,7 @@ void exibePalavras(){
                 cin >> resposta;
                 verificaResposta = comparaString(resposta,palavra);
                 if(verificaResposta){
-                    cout << mergeStrings(charada.substr(0, pedaco), charadaCrip.substr(pedaco + 1, fim)) << endl;
+                    cout << mergeStrings(charada.substr(0, pedaco), charadaCrip.substr(pedaco, fim)) << endl;
                     break;
                 }else{
                     cout << "Tente outra vez!!!" << endl;
@@ -456,9 +456,16 @@ void usuarioRespondeFrase(){
 }
 
 void jogar() {
-	exibeCharadaCriptografada();
-    exibePalavras();
-    usuarioRespondeFrase();
+    NIVEL = 1;
+    while (NIVEL <= 3) {
+        cout << endl << "Nivel " << NIVEL << endl;
+        exibeCharadaCriptografada();
+        exibePalavras();
+        usuarioRespondeFrase();
+    }
+    if (NIVEL == 4) {
+        cout << endl << "Parabens! Voce finalizou o jogo!" << endl;
+    }
 }
 
 int main() {

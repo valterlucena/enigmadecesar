@@ -322,34 +322,15 @@ void exibePalavras(){
         if (verificaResposta) {
             cout << mergeStrings(charada.substr(0, pedaco), charadaCrip.substr(pedaco, fim)) << endl;
         } else {
-            cout << "Tente outra vez!!!" << endl;
-            int chances = 0;
-            while( chances < 2){
-                cout << "Resposta:" << endl;
-                cin >> resposta;
-                verificaResposta = comparaString(resposta,palavra);
-                if(verificaResposta){
-                    cout << mergeStrings(charada.substr(0, pedaco), charadaCrip.substr(pedaco, fim)) << endl;
-                    break;
-                }else{
-                    cout << "Tente outra vez!!!" << endl;
-                    cout << "Resposta: " << endl;
-                    cin >> resposta;
-                    verificaResposta = comparaString(resposta,palavra);
-                    chances++;
-                }
-            }
-
             int decisao = 0;
-            if (chances == 2 && !verificaResposta) {
-            	cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
-            	cin >> decisao;
-            	if (decisao == 1) {
-            		jogar();
-				} else {
-					exit(0);
-				}
+            cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
+            cin >> decisao;
+            if (decisao == 1) {
+            	jogar();
+			} else {
+				exit(0);
 			}
+
         }
         i++;
     }
@@ -367,30 +348,14 @@ void usuarioRespondeFrase(){
     }else{
         cout << "Tente outra vez!!!" << endl;
         int chances = 0;
-        while(chances < 2){
-            cout << "Resposta da charada:" << endl;
-            cin >> resposta;
-            verificaResposta = comparaString(resposta,respostas[indiceCharada]);
-            if(verificaResposta){
-                NIVEL ++;
-                break;
-            }else{
-                cout << "Tente outra vez!!!" << endl;
-                cout << "Resposta da charada:" << endl;
-                cin >> resposta;
-                verificaResposta = comparaString(resposta,respostas[indiceCharada]);
-                chances++;
-            }
-        }
         int decisao = 0;
-        if(chances == 2 && !verificaResposta){
-            cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
-            cin >> decisao;
-            if(decisao == 1){
-                jogar();
-            }else{
-                exit(0);
-            }
+        cout << "Deseja jogar novamente?(1-Sim, 0-Nao)" << endl;
+        cin >> decisao;
+        if(decisao == 1){
+            jogar();
+        }else{
+            exit(0);
+
         }
     }
 }

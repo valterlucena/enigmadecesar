@@ -146,8 +146,8 @@ void jogar();
 
 void telaInicial();
 void regras();
-void jogar();
 int indiceRandomico();
+bool verificaUltimoIndice(int index) {
 int limiteIndice();
 int nivel = 0;
 string escolheFrase();
@@ -201,14 +201,58 @@ void telaInicial()
     cout << "|                                                                        |" << endl;
     cout << "|  Utilize a Cifra de Cesar para descobrir o que a Esfinge esta falando! |" << endl;
     cout << "|                                                                        |" << endl;
-    cout << "| Pressione 1 para as regras, 2 para jogar agora!                        |" << endl;
     cout << "'------------------------------------------------------------------------'" << endl;
+    
+    desenhaEsfinge();
 }
+
+void desenhaEsfinge() {
+	cout << "			" << "        --------   " << endl;
+	cout << "			" << "     --------------" << endl;
+	cout << "			" << "   ---------|--------" << endl;
+	cout << "			" << "  --- | | | | | | | ---" << endl;
+	cout << "			" << " -----| | | | | | |-----" << endl;
+	cout << "			" << "-------           -------   " << endl;
+	cout << "			" << "-------   0   0   -------  " << endl;
+	cout << "			" << "-------     |     -------  " << endl;
+	cout << "			" << " ------     ~     ------  " << endl;
+	cout << "			" << "  -----   _____   ----- " << endl;
+	cout << "			" << "   ---     ___    ---" << endl;
+	cout << "			" << "   ---     ___    ---" << endl;
+	cout << "			" << "    --      _     --" << endl;
+	
+}
+
+void regras() {
+	cout << ".------------------------------------------------------------------------." << endl;
+	cout << "|                                                                        |" << endl;
+	cout << "|                                Regras                                  |" << endl;
+	cout << "|                                                                        |" << endl;
+	cout << "| 1. Para decifrar a mensagem da esfinge, decifre primeiro tres palavras |" << endl;
+	cout << "| 2. A cada palavra decifrada, um terco da mensagem original eh revelada |" << endl;
+	cout << "| 3. Apos revelada a mensagem, responda a pergunta que a esfinge fez     |" << endl;
+	cout << "| 4. Voce possuira apenas tres chances!                                  |" << endl;
+	cout << "| 5. Use as dicas a seu favor! Por exemplo, se a palavra a ser decifrada |" << endl;
+	cout << "|    for 'xgw', e a chave for igual a 2, troque cada letra pela que esta |" << endl;
+	cout << "|    2 posicoes atras       .                                            |" << endl;
+	cout << "|    Como resultado, voce obtera 'veu' como resposta.                    |" << endl;
+	cout << "| 6. Utilize apenas letras minusculas, sem acentuacao.                   |" << endl;
+	cout << "|                                                                        |" << endl;
+	cout << "'------------------------------------------------------------------------'" << endl;
+ }
+
 
 int indiceRandomico()
 {
     srand(time(NULL));
-    return rand()%29;
+    return rand()%31;
+}
+
+/**
+    Verifica se o inteiro passado é igual ao indice referente a ultima charada mostrada
+**/
+bool verificaUltimoIndice(int index) {
+    return index == ultimoIndice;
 }
 
 int limiteIndice()
@@ -254,11 +298,9 @@ void imprimeCharada()
 
 }
 
-void regras()
-{
-    cout << "Escrever regras";
-}
-
+/**
+    Criptografa uma string usando o deslocamento definido pela chave
+**/
 string crip(string frase, int chave)
 {
 
@@ -288,6 +330,10 @@ string crip(string frase, int chave)
 }
 
 
+
+/**
+    Descriptografa uma string usando o deslocamente definido pela chave
+**/
 string descrip(string frase, int chave)
 {
     string rest = "";
@@ -313,7 +359,6 @@ string descrip(string frase, int chave)
     }
     return rest;
 }
-
 void jogar()
 {
     imprimeCharada();

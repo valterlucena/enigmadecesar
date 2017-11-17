@@ -130,12 +130,11 @@ void regras() {
 	cout << "| 1. Para decifrar a mensagem da esfinge, decifre primeiro tres palavras |" << endl;
 	cout << "| 2. A cada palavra decifrada, um terco da mensagem original eh revelada |" << endl;
 	cout << "| 3. Apos revelada a mensagem, responda a pergunta que a esfinge fez     |" << endl;
-	cout << "| 4. Voce possuira apenas tres chances!                                  |" << endl;
-	cout << "| 5. Use as dicas a seu favor! Por exemplo, se a palavra a ser decifrada |" << endl;
+	cout << "| 4. Use as dicas a seu favor! Por exemplo, se a palavra a ser decifrada |" << endl;
 	cout << "|    for 'xgw', e a chave for igual a 2, troque cada letra pela que esta |" << endl;
 	cout << "|    2 posicoes atras       .                                            |" << endl;
 	cout << "|    Como resultado, voce obtera 'veu' como resposta.                    |" << endl;
-	cout << "| 6. Utilize apenas letras minusculas, sem acentuacao.                   |" << endl;
+	cout << "| 5. Utilize apenas letras minusculas, sem acentuacao.                   |" << endl;
 	cout << "|                                                                        |" << endl;
 	cout << "'------------------------------------------------------------------------'" << endl;
  }

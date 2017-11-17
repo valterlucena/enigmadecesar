@@ -18,7 +18,10 @@ using namespace std;
 
 string alfa = "abcdefghijklmnopqrstuvwxyz";
 
-string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?",
+// 0 tbm eh indice do array
+int ultimoIndice = -1;
+
+string charadas[100] = {"mantem sempre o mesmo tamanho, nao importa o peso?",
                              "o que detestamos na praia e adoramos na panela?",
                              "o que eh que anda com os pe na cabeca?",
                              "o que eh, o que eh? que eh irma de minha tia e nao eh minha tia?",
@@ -27,38 +30,119 @@ string perguntasFacil[10] = {"mantem sempre o mesmo tamanho, nao importa o peso?
                              "qual o sobrenome que todo mundo tem?",
                              "quem morre em pe?",
                              "tem cabeca e nao eh gente, tem dente e nao eh pente?",
-                             "o que eh que nasce grande e morre pequeno?"
-                            };
-string respostasFacil[10] = {"balanca", "caldo", "piolho", "mae", "cama", "pe", "costa", "vela", "alho", "lapis"};
+                             "o que eh que nasce grande e morre pequeno?",
+                             "eh nome de mulher e nome de homem. ia mas acabou nao indo?",
+                             "quem inventou a fila?",
+                             "na televisao cobre um pais; no futebol, atrai a bola; em casa incentiva o lazer. O que eh?",
+                             "o que eh que se poe na mesa, parte, reparte mas nao se come?",
+                             "dois vizinhos. um nao vai a casa do outro e os dois nao se veem por causa de um morrinho? Quem sao eles?",
+                             "o que eh, o que eh? do tamanho de uma bolota e enche a casa ate a porta?",
+                             "o que e que quanto mais rugas tem mais novo eh?",
+                             "o que eh, o que eh,se voce mudar uma letra em meu nome, ira aparecer o nome do animal que eh meu maior inimigo",
+                             "qual a coisa mais veloz do mundo?",
+                             "o que eh que corre em volta do pasto inteiro sem se mexer?",
+                             "qual a cidade sulamericana que pende nos galhos da arvore?",
+                             "tem coroa, mas nao eh rei, tem raiz, mas nao eh planta?",
+                             "o que eh, o que eh, nao tem pe e corre, tem leito e nao dorme, quando para,morre?",
+                             "o que eh o que eh, uma caixinha de bom parecer, nao ha carpinteiro que saiba fazer?",
+                             "o que eh, o que eh? que nao se come, mas eh bom para se comer?",
+                             "o que eh, o que eh? que mesmo atravessando o rio, consegue nao se molhar?",
+                             "o que eh o que eh: nao tem olhos, mas pisca, nao tem boca, mas comanda?",
+                             "o que eh o que eh: quanto mais eu tiro mais eu tenho?",
+                             "o que eh que anda com a barriga para tras?",
+                             "o que eh, o que eh? me diga se for capaz. me diga quem eh aquele que num instante se quebra se alguem diz o nome dele?",
+                             "o que eh, o que eh, que entra na agua e nao se molha?",
+							 "o que eh, o que eh, de dia tem quatro pes e de noite tem seis?",
+							 "o que eh, o que eh, quanto mais se tira mais aumenta?",
+							 "o que eh, o que eh, uma casinha branca sem tranca e sem janela?",
+							 "o que eh, o que eh, tem asa mas nao voa, tem bico mas nao bica?",
+							 "o que eh, o que eh, quanto mais se seca, mais molhada fica?",
+							 "o que eh, o que eh, da um pulo e se veste de noiva?",
+							 "o que eh, o que eh, que eh meu, mas meus amigos usam mais do que eu?",
+							 "o que eh, o que eh, quanto mais a gente perde, com mais a gente fica?",
+							 "o que eh, o que eh, uma comida que liga e desliga?",
+							 "o que eh, o que eh, quanto mais se tira mais a gente tem?",
+							 "o que eh, o que eh, cai de pe e corre deitado?",
+							 "o que eh, o que eh, quanto mais ruga tem, mais novo eh?",
+							 "o que eh, o que eh, sempre anda sempre com os pe na cabe?",
+							 "o que eh, o que eh, fica cheio de boca para baixo e vazio de boca para cima?",
+							 "o que eh, o que eh, nasce grande e morre pequeno?",
+							 "o que eh, o que eh, nos matamos quando esta nos matando?",
+							 "o que eh, o que eh, se poes na mesa, parte, reparte mas nao se come?",
+							 "o que eh, o que eh, irma de minha tia e nao eh minha tia?",
+							 "o que eh, o que eh, tem capa mas nao eh superhomem, tem folha mas nao eh arvore, tem orelha mas nao eh gente, e eh surdo mas conta tudo?",
+							 "o que eh, o que eh, quando parte uma partem as duas, quando chega uma chegam as duas?",
+							 "o que eh, o que eh, que pesa mais no mundo?",
+							 "o que eh, o que eh, tem coroa mas nao eh rei, tem espinho mas n?eh peixe?",
+							 "qual eh a parte do carro que se originou no antigo egito?",
+							 "quem eh que bate na porta sem estar chamando ninguem?",
+							 "qual o lugar onde o pescador pode ate escolher o peixe?",
+							 "quem eh que se encarrega pessoalmente de transmitir os nossos desabafos, as nossas alegrias, exigencias e consulta sem jamais ter contato conosco?",
+							 "qual a protese que vive durante um longo periodo?",
+							 "qual o pais que sai pegando tudo?",
+							 "qual pais do caribe eh uma explosao?",
+							 "qual a planta dos sentimentos imediatos?",
+							 "quanto menos luz mais eu apare? quem eu sou?",
+							 "qual eh o super heroi preferido dos gordinhos?",
+							 "o que se quebra sem nem mesmo tocar?",
+							 "o rapaz terminou com a garota e depois voltou com ela, qual eh o nome do filme?",
+							 "o que so pode ser usado quebrado?",
+							 "o que eh algo e ao mesmo tempo nada?",
+							 "qual o pais que distribui cana de acucar?",
+							 "quem sempre casa mas continua solteiro?",
+							 "o que esta na sua frente mas voce nao ve?",
+							 "quais sao as mulheres que vivem mais tempo que os maridos?",
+							 "o que tem cara mas nao eh homem, tem coroa mas nao eh rei?",
+							 "o que todo mundo precisa, todo mundo pede, todo mundo da, mas ninguem segue?",
+							 "o que so cresce para tras?",
+							 "qual eh a pedra que danca?",
+							 "o que tem uma perna longa e a outra perna curta, mas anda sem parar o dia todo?",
+							 "o rio amazonas esta em qual estado?",
+							 "o que eh o que eh voa sem ter asas e chora sem ter olhos?"
+							 "qual eh o pais que cabe na geladeira?",
+							 "o que eh, o que eh, tem pernas, mas nao anda. tem braco, mas nao abraca?",
+							 "o que sao duas irmas, uma no lado direito e outra no lado esquerdo, que escutam muito bem?",
+							 "o que eh o que eh, duas irmas da mesma idade, mas com diferentes habilidades?",
+							 "que tipo de barba tem um tubarao",
+							 "qual lugar mais certo do brasil?",
+							 "eh um passaro brasileiro e seu nome de tras para frente eh igual.",
+							 "mantem sempre o mesmo tamanho, nao importa o peso?",
+							 "o que detestamos na praia e adoramos na panela?",
+							 "o que eh, o que eh? anda deitado e dorme em pe?",
+							 "qual o sobrenome que todo mundo tem?",
+							 "quem morre em pe?",
+							 "tem cabeca e nao eh gente, tem dente e nao eh pente?",
+							 "eh nome de mulher e nome de homem. ia mas acabou nao indo?",
+							 "quem inventou a fila?",
+							 "na televisao cobre um pais; no futebol, atrai a bola; em casa incentiva o lazer. O que eh?",
+							 "dois vizinhos. um nao vai a casa do outro e os dois nao se veem por causa de um morrinho? Quem sao eles?",
+							 "o que eh, o que eh? do tamanho de uma bolota e enche a casa ate a porta?",
+							 "o que eh, o que eh,se voce mudar uma letra em meu nome, ira aparecer o nome do animal que eh meu maior inimigo",
+							 "qual a coisa mais veloz do mundo?",
+							 "o que eh que corre em volta do pasto inteiro sem se mexer?",
+							 "qual a cidade sulamericana que pende nos galhos da arvore?",
+							 "tem coroa, mas nao eh rei, tem raiz, mas nao eh planta?"
+                        };
+
+string respostas[101] = {"balanca", "caldo", "piolho", "mae", "cama", "pe", "costa", "vela", "alho", "lapis",
+								"isaias","formiga","rede","baralho","olhos","luz","pneu","rato","pensamento","cerca",
+                                "lima","dente","rio","noz","talher","ponte","semaforo","fotografias","perna","silencio",
+								 "sombra","cama","buraco","ovo","bule","toalha","pipoca","nome","sono","strogonoff","fotografia",
+								 "chuva","pneu","piolho","chapeu","lapis","fome","baralho","mae","livro","pernas","balanca",
+								 "abacaxi","faraois","marceneiro","peixaria","carteiro","dentadura","catar","granada",
+								 "jacinto","escuridao","supermercado","promessa","exterminador","ovo","peixe","canada",
+								 "padre","futuro","viuvas","moedas","conselho","fila","arrocha","relogio","liquido","nuvem",
+								 "peru","cadeira","orelhas","maos","barbatana","sertao","arara","balanca","caldo","pe","costa",
+								 "vela","alho","isaias","formiga","rede","olhos","luz","rato","pensamento","cerca","lima","dente"
+								 };
+
+
 string palavrasFacil[10] = {"sob", "vil", "fel", "ceu", "mal", "ver", "ser", "reu", "vao", "paz"};
-
-string perguntasMedio[10] = { "eh nome de mulher e nome de homem. ia mas acabou nao indo?",
-                              "quem inventou a fila?",
-                              "na televisao cobre um pais; no futebol, atrai a bola; em casa incentiva o lazer. O que eh?",
-                              "o que eh que se poes na mesa, parte, reparte mas nao se come?",
-                              "dois vizinhos. um nao vai a casa do outro e os dois nao se veem por causa de um morrinho? Quem sao eles?",
-                              "o que eh, o que eh? do tamanho de uma bolota e enche a casa ate a porta?",
-                              "o que e que quanto mais rugas tem mais novo eh?",
-                              "o que eh, o que eh,se voce mudar uma letra em meu nome, ira aparecer o nome do animal que eh meu maior inimigo",
-                              "qual a coisa mais veloz do mundo?",
-                              "o que eh que corre em volta do pasto inteiro sem se mexer?"
-                              };
-string respostasMedio[10] = {"isaias","formiga","rede","baralho","olhos","luz","pneu","rato","pensamento","cerca"};
 string palavrasMedio[10] = {"empafia", "sensato", "preciso", "morbido", "despota", "alegria", "mitigar", "exilado", "ansioso", "ambicao"};
-
-string perguntasDificil[10] = { "qual a cidade sulamericana que pende nos galhos da arvore?",
-                                "tem coroa, mas nao eh rei, tem raiz, mas nao eh planta?",
-                                "o que eh, o que eh, nao tem pe e corre, tem leito e nao dorme, quando para,morre?",
-                                "o que eh o que eh, uma caixinha de bom parecer, nao ha carpinteiro que saiba fazer?",
-                                "o que eh, o que eh? que nao se come, mas eh bom para se comer?",
-                                "o que eh, o que eh? que mesmo atravessando o rio, consegue nao se molhar?",
-                                "o que eh o que eh: nao tem olhos, mas pisca, nao tem boca, mas comanda?",
-                                "o que eh o que eh: quanto mais eu tiro mais eu tenho?",
-                                "o que eh que anda com a barriga para tras?",
-                                "o que eh, o que eh? me diga se for capaz. me diga quem eh aquele que num instante se quebra se alguem diz o nome dele?"
-                              };
-string respostasDificil[10] = {"lima","dente","rio","noz","talher","ponte","semaforo","fotografias","perna","silencio"};
 string palavrasDificil[10] = {"perspectiva", "significado", "dissimulado", "complacente", "vicissitude", "compreensao", "resiliencia", "contundente", "contingente", "expectativa"};
+
+void desenhaEsfinge();
+void jogar();
 
 void telaInicial();
 void regras();

@@ -9,6 +9,13 @@
 
 -}
 
+-- imports
+import System.Random
+
+
+-- botar aqui as constantes --
+charadas = [("mantem sempre o mesmo tamanho, nao importa o peso?","balanca")]
+
 
 -- funcao principal
 main = do
@@ -27,11 +34,14 @@ main = do
                 
                 return ()
     else
-        jogar
-
+        jogar	
 
 jogar = do
     putStrLn "to do!"
+    
+-- funcao que gera um indice aleatorio    
+geraIndice :: Int -> IO Int
+geraIndice limite = randomRIO(0, limite)
 
 telaInicial = do
     putStrLn ".------------------------------------------------------------------------."

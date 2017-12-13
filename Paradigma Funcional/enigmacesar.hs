@@ -42,3 +42,11 @@ jogar = do
 -- funcao que gera um indice aleatorio    
 geraIndice :: Int -> IO Int
 geraIndice limite = randomRIO(0, limite)
+
+-- deslocamento para cifra de cesar
+desloca :: Char -> Int -> Char
+desloca letra desloc = chr (ord letra + desloc)
+
+-- Cifra de cesar
+cifra :: String -> Int -> String
+cifra palavra desloc = [desloca palav desloc | palav <- palavra]

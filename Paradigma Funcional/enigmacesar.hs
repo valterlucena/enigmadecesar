@@ -14,7 +14,24 @@
 main = do
     telaInicial
     desenhaEsfinge
-    regras
+    putStrLn "Pressione 1 para as regras, 2 para jogar agora!"
+    opcao <- getLine
+    if (read opcao) == 1
+        then do
+            regras
+            putStrLn "Digite 1 para jogar agora, ou 0 para sair"
+            novaOpcao <- getLine
+            if (read novaOpcao) == 1
+                then jogar
+            else
+                
+                return ()
+    else
+        jogar
+
+
+jogar = do
+    putStrLn "to do!"
 
 telaInicial = do
     putStrLn ".------------------------------------------------------------------------."

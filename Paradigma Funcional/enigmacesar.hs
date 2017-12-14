@@ -43,9 +43,15 @@ jogar = do
 geraIndice :: Int -> IO Int
 geraIndice limite = randomRIO(0, limite)
 
+ehSimbolo :: Char -> Bool
+ehSimbolo c = c == ' ' || c == ',' || c == '?' || c == '.'
+
 -- deslocamento para cifra de cesar
 desloca :: Char -> Int -> Char
-desloca letra desloc = chr (ord letra + desloc)
+desloca letra num
+    |(ehSimbolo letra) = letra
+	| otherwise = chr (ord letra + num)
+
 
 -- Cifra de cesar
 cifra :: String -> Int -> String

@@ -13,6 +13,7 @@
 import System.Random
 import Charadas
 import Textos
+import Data.Char
 
 -- botar aqui as constantes --
 listaCharadas = Charadas.charadas
@@ -43,16 +44,19 @@ jogar = do
 geraIndice :: Int -> IO Int
 geraIndice limite = randomRIO(0, limite)
 
-ehSimbolo :: Char -> Bool
-ehSimbolo c = c == ' ' || c == ',' || c == '?' || c == '.'
+-- funcoes para nao deixar que os caracteres saiam do escopo [a..z]
+letraPNum :: Char -> Int
+letraPNum letra = ord letra - ord 'a'
 
--- deslocamento para cifra de cesar
+numPLetra :: Int -> Char
+numPLetra num = chr (num + ord 'a')
+
+-- funcao para fazer o descolamento de uma letra
 desloca :: Char -> Int -> Char
-desloca letra num
-    |(ehSimbolo letra) = letra
-	| otherwise = chr (ord letra + num)
+desloca letra desloc
+    | (isAlpha letra) = numPLetra (( letraPNum (toLower letra) + desloc) `mod` 26)
+    | otherwise = letra
 
-
--- Cifra de cesar
+-- cifra de cesar
 cifra :: String -> Int -> String
 cifra palavra desloc = [desloca palav desloc | palav <- palavra]

@@ -24,12 +24,12 @@ limiteChave = 4
 main = do
     Textos.telaInicial
     Textos.desenhaEsfinge
-    putStrLn "Pressione 1 para as regras, 2 para jogar agora!"
+    putStrLn $ "Pressione 1 para as regras, 2 para jogar agora!"
     opcao <- getLine
     if (read opcao) == 1
         then do
             Textos.regras
-            putStrLn "Digite 1 para jogar agora, ou 0 para sair"
+            putStrLn $ "Digite 1 para jogar agora, ou 0 para sair"
             novaOpcao <- getLine
             if (read novaOpcao) == 1
                 then jogar
@@ -39,21 +39,31 @@ main = do
         jogar
 
 jogar = do
-    mostraCharada
+    let nivel = 1
+    mostraCharada nivel
 
--- ta sebozinho ainda mas funciona, depois modifico
-mostraCharada = do
-    aleatorio <- geraIndice (length listaCharadas - 1)
-    let charada = fst (listaCharadas !! aleatorio)
-    chave <- geraIndice limiteChave
-    let cifrada = cifra charada chave
-    print $ cifrada
-    print $ cifra cifrada (0-chave)
+-- falta inserir a parte de mostrar as palavras e
+mostraCharada nivel = do
+    if nivel > 3 then return ()
+    else do    
+        indexCharada <- geraIndice 0 (length listaCharadas - 1)
+        chave <- geraIndice 1 limiteChave
+        let charada = fst (listaCharadas !! indexCharada)
+        let resposta = snd (listaCharadas !! indexCharada)
+        let cifrada = cifra charada chave        
+        putStrLn $ "\n" ++ cifrada ++ " " ++ resposta
+        putStrLn $ "Resposta: "
+        respostaUsuario <- getLine
+        let resultado = respostaUsuario == resposta
+        if resultado
+            then mostraCharada (nivel+1)
+        else do
+            putStrLn $ "Você perdeu :/" 
 
     
 -- funcao que gera um indice aleatorio    
-geraIndice :: Int -> IO Int
-geraIndice limite = randomRIO(0, limite)
+geraIndice :: Int -> Int -> IO Int
+geraIndice inicio limite = randomRIO(inicio, limite)
 
 -- funcoes para nao deixar que os caracteres saiam do escopo [a..z]
 letraPNum :: Char -> Int

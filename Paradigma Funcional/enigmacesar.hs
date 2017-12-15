@@ -17,6 +17,7 @@ import Data.Char
 
 -- botar aqui as constantes --
 listaCharadas = Charadas.charadas
+limiteChave = 4
 
 
 -- funcao principal
@@ -38,7 +39,17 @@ main = do
         jogar
 
 jogar = do
-    putStrLn "to do!"
+    mostraCharada
+
+-- ta sebozinho ainda mas funciona, depois modifico
+mostraCharada = do
+    aleatorio <- geraIndice (length listaCharadas - 1)
+    let charada = fst (listaCharadas !! aleatorio)
+    chave <- geraIndice limiteChave
+    let cifrada = cifra charada chave
+    print $ cifrada
+    print $ cifra cifrada (0-chave)
+
     
 -- funcao que gera um indice aleatorio    
 geraIndice :: Int -> IO Int

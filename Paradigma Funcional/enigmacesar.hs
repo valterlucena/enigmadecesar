@@ -81,3 +81,11 @@ desloca letra desloc
 -- cifra de cesar
 cifra :: String -> Int -> String
 cifra palavra desloc = [desloca palav desloc | palav <- palavra]
+
+-- funcao que retorna uma parte de uma string
+substring :: String -> Int -> Int -> String
+substring palavra inicio fim = take (fim-inicio+1) (drop (inicio) palavra)
+    
+-- funcao que decifra apenas uma parte de uma string
+decifraPedaco :: String -> Int -> Int -> Int -> String
+decifraPedaco palavra chave inicio fim = cifra (substring palavra inicio fim) (0-chave)

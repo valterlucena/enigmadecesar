@@ -1,0 +1,1 @@
+palavra_media = ["empafia","sensato","preciso","morbido","despota","alegria","mitigar","exilado","ansioso","ambicao","legado","formal","dadiva","difuso","escusa","idiota","gentil","comico","habito", "ocioso","remoto","sobrio","asseio","etereo","objeto","agonia","acesso","vulgar","buscar", "esteio"]

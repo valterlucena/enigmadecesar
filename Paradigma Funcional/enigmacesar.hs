@@ -14,9 +14,12 @@ import System.Random
 import Charadas
 import Textos
 import Data.Char
+import Palavras
+import System.Exit
 
 -- botar aqui as constantes --
 listaCharadas = Charadas.charadas
+listaPalavras = Palavras.palavras
 limiteChave = 4
 
 
@@ -52,15 +55,42 @@ mostraCharada nivel = do
         let resposta = snd (listaCharadas !! indexCharada)
         let cifrada = cifra charada chave        
         putStrLn $ "\n" ++ cifrada ++ " " ++ resposta
+        putStrLn $ "\nDescifre as palavras abaixo:"
+        escolhePalavra 0 cifrada chave 0
         putStrLn $ "Resposta: "
         respostaUsuario <- getLine
         let resultado = respostaUsuario == resposta
         if resultado
             then mostraCharada (nivel+1)
         else do
-            putStrLn $ "Você perdeu :/" 
+            putStrLn $ "Você perdeu :/"
+            putStrLn $ "Pressione 2 para jogar novamente ou 0 para sair:"
+            opcao <- readLn
+            if opcao == 2 then jogar else (exitWith ExitSuccess)
 
-    
+--funcao que exibe palavras
+escolhePalavra n charada chaveCharada i = do
+     if n == 3 then return()
+     else do
+         indexPalavra <- geraIndice 0 (length listaPalavras - 1)
+         chave <- geraIndice 1 limiteChave
+         let palavra = listaPalavras !! indexPalavra
+         let palavraCifrada = cifra palavra chave
+         putStrLn $ show (n+1) ++ ")" ++ palavraCifrada
+         putStrLn $ "Dica: chave = " ++ show chave
+         putStrLn $ "Resposta: "
+         respostaUsuario <- getLine
+         if respostaUsuario == palavra then do
+             let pedaco = (i+1) * (div (length charada) 3)
+             let string = decifraPedaco charada chaveCharada 0 pedaco
+             putStrLn string
+             escolhePalavra (n + 1) charada chaveCharada (i+1)
+         else do
+             putStrLn $ "Você perdeu :/"
+             putStrLn $ "Pressione 2 para jogar novamente ou 0 para sair:"
+             opcao <- readLn
+             if opcao == 2 then jogar else (exitWith ExitSuccess)
+
 -- funcao que gera um indice aleatorio    
 geraIndice :: Int -> Int -> IO Int
 geraIndice inicio limite = randomRIO(inicio, limite)

@@ -53,13 +53,22 @@ mostraCharada nivel = do
     else do    
         indexCharada <- geraIndice 0 (length listaCharadas - 1)
         chave <- geraIndice 1 limiteChave
+        
         let charada = fst (listaCharadas !! indexCharada)
         let resposta = snd (listaCharadas !! indexCharada)
         let cifrada = cifra charada chave        
+        
+        putStrLn $ "\n"
+        putStrLn $ "Nivel: " ++ show nivel
         putStrLn $ "\n" ++ cifrada
-        putStrLn $ "\nDescifre as palavras abaixo:"
-        escolhePalavra 0 cifrada chave 0 nivel
+        putStrLn $ "\n" ++ "Decifre as palavras abaixo:"
+        
+        let cont = 0
+        let contPedaco = 0
+        escolhePalavra cont cifrada chave contPedaco nivel
+        
         putStrLn $ "Resposta: "
+        
         respostaUsuario <- getLine
         let resultado = respostaUsuario == resposta
         if resultado
@@ -77,26 +86,33 @@ selecionaLista nivel
     | nivel == 3 = listaDificil
 
 --funcao que exibe palavras
-escolhePalavra n charada chaveCharada i nivel = do
-     if n == 3 then return()
+escolhePalavra cont charada chaveCharada contPedaco nivel = do
+     if cont == 3 then return ()
      else do
          let palavras = selecionaLista nivel :: [String]
+         
          indexPalavra <- geraIndice 0 (length palavras - 1)
          chave <- geraIndice 1 limiteChave
+         
          let palavra = palavras !! indexPalavra
          let palavraCifrada = cifra palavra chave
-         putStrLn $ show (n+1) ++ ")" ++ palavraCifrada
+         
+         putStrLn $ show (cont+1) ++ ")" ++ palavraCifrada
          putStrLn $ "Dica: chave = " ++ show chave
          putStrLn $ "Resposta: "
+         
          respostaUsuario <- getLine
+         
          if respostaUsuario == palavra then do
-             let pedaco = (i+1) * (div (length charada) 3)
+             let pedaco = (contPedaco+1) * terco where terco = (length charada `div` 3)
              let string = decifraPedaco charada chaveCharada 0 pedaco ++ drop (pedaco+1) charada
+             
              putStrLn string
-             escolhePalavra (n + 1) charada chaveCharada (i+1) nivel
+             escolhePalavra (cont + 1) charada chaveCharada (contPedaco+1) nivel
          else do
              putStrLn $ "Você perdeu :/"
              putStrLn $ "Pressione 2 para jogar novamente ou 0 para sair:"
+             
              opcao <- readLn
              if opcao == 2 then jogar else (exitWith ExitSuccess)
 

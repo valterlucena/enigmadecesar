@@ -19,7 +19,9 @@ import System.Exit
 
 -- botar aqui as constantes --
 listaCharadas = Charadas.charadas
-listaPalavras = Palavras.palavras
+listaFacil = Palavras.facil
+listaMedio = Palavras.medio
+listaDificil = Palavras.dificil
 limiteChave = 4
 
 
@@ -54,9 +56,9 @@ mostraCharada nivel = do
         let charada = fst (listaCharadas !! indexCharada)
         let resposta = snd (listaCharadas !! indexCharada)
         let cifrada = cifra charada chave        
-        putStrLn $ "\n" ++ cifrada ++ " " ++ resposta
+        putStrLn $ "\n" ++ cifrada
         putStrLn $ "\nDescifre as palavras abaixo:"
-        escolhePalavra 0 cifrada chave 0
+        escolhePalavra 0 cifrada chave 0 nivel
         putStrLn $ "Resposta: "
         respostaUsuario <- getLine
         let resultado = respostaUsuario == resposta
@@ -68,13 +70,20 @@ mostraCharada nivel = do
             opcao <- readLn
             if opcao == 2 then jogar else (exitWith ExitSuccess)
 
+selecionaLista :: Int -> [String]
+selecionaLista nivel
+    | nivel == 1 = listaFacil
+    | nivel == 2 = listaMedio
+    | nivel == 3 = listaDificil
+
 --funcao que exibe palavras
-escolhePalavra n charada chaveCharada i = do
+escolhePalavra n charada chaveCharada i nivel = do
      if n == 3 then return()
      else do
-         indexPalavra <- geraIndice 0 (length listaPalavras - 1)
+         let palavras = selecionaLista nivel :: [String]
+         indexPalavra <- geraIndice 0 (length palavras - 1)
          chave <- geraIndice 1 limiteChave
-         let palavra = listaPalavras !! indexPalavra
+         let palavra = palavras !! indexPalavra
          let palavraCifrada = cifra palavra chave
          putStrLn $ show (n+1) ++ ")" ++ palavraCifrada
          putStrLn $ "Dica: chave = " ++ show chave
@@ -84,7 +93,7 @@ escolhePalavra n charada chaveCharada i = do
              let pedaco = (i+1) * (div (length charada) 3)
              let string = decifraPedaco charada chaveCharada 0 pedaco ++ drop (pedaco+1) charada
              putStrLn string
-             escolhePalavra (n + 1) charada chaveCharada (i+1)
+             escolhePalavra (n + 1) charada chaveCharada (i+1) nivel
          else do
              putStrLn $ "Você perdeu :/"
              putStrLn $ "Pressione 2 para jogar novamente ou 0 para sair:"

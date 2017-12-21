@@ -1,4 +1,12 @@
 module Palavras
-(palavras
+(
+    facil,
+    medio,
+    dificil
 )where
-palavras = ["sob","vil","fel","ceu","mal","ver","ser","reu","vao","paz","boi","pau","des","fim","mes","fez","sal","jaz","seu","rei","jus","via","veu","pai","van","asa","som","rir"]
+
+facil = ["sob","vil","fel","ceu","mal","ver","ser","reu","vao","paz","boi","pau","des","fim","mes","fez","sal","jaz","seu","rei","jus","via","veu","pai","van","asa","som","rir"]
+
+medio = ["empafia","sensato","preciso","morbido","despota","alegria","mitigar","exilado","ansioso","ambicao","legado","formal","dadiva","difuso","escusa","idiota","gentil","comico","habito", "ocioso","remoto","sobrio","asseio","etereo","objeto","agonia","acesso","vulgar","buscar", "esteio"]
+
+dificil = ["perspectiva", "significado", "dissimulado","complacente","vicissitude","compreensao","resiliencia","contundente","contingente","expectativa","prudencia","sapiencia","excelente","excedente","individuo","suplantar","arcabouco","discorrer","mesquinho","restricao","espontaneo","pernostico","transeunte","proposicao","inferencia","consolidar","sintetizar","constituir","restringir","maturidade"]

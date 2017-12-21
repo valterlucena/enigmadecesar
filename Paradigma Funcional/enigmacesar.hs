@@ -82,7 +82,7 @@ escolhePalavra n charada chaveCharada i = do
          respostaUsuario <- getLine
          if respostaUsuario == palavra then do
              let pedaco = (i+1) * (div (length charada) 3)
-             let string = decifraPedaco charada chaveCharada 0 pedaco
+             let string = decifraPedaco charada chaveCharada 0 pedaco ++ drop (pedaco+1) charada
              putStrLn string
              escolhePalavra (n + 1) charada chaveCharada (i+1)
          else do

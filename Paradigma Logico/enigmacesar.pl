@@ -7,3 +7,13 @@
 			THAIS TOSCANO
 			VALTER LUCENA
 */
+
+:- [textos].
+
+:- initialization(main).
+
+main :-
+	telaInicial(),nl,
+	regras(),nl,
+	desenhaEsfinge,nl,
+	halt(0).

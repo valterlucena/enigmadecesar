@@ -8,14 +8,24 @@
 			VALTER LUCENA
 */
 
+:- use_module(library(apply)).
+:- use_module(library(random)).
+
 :- [textos].
+:- [charadas].
+:- [palavras].
 
-/* alfabeto */
-alfabeto(_,X) :- X = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'].
+/* Predicado que criptografa uma string a partir do deslocamento D */
+crip(L1, D, L2) :-
+    string_to_list(L1, R),
+	maplist(cifra(D), R, Y),
+	string_to_list(L2, Y).
 
-/* acessa o elemento associado a um indice */
-getElement(0,[H|_], H).
-getElement(I,[_|T], R) :- X is I-1, getElement(X,T,R).
+/* Aplica o deslocamento D */
+cifra(X, D, Y) :-
+	Y is X+D. 
+    
+numero(X) :- random(1, 4, X).
 
 :- initialization(main).
 
@@ -23,4 +33,6 @@ main :-
 	telaInicial(),nl,
 	desenhaEsfinge(),nl,
 	regras(),nl,
+    numero(X), write(X), nl,
+    crip(teste, X, Y), write(Y), nl,
 	halt(0).

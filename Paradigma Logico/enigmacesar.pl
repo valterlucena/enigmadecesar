@@ -24,6 +24,10 @@ crip(L1, D, L2) :-
 /* Aplica o deslocamento D */
 cifra(X, D, Y) :-
 	Y is X+D. 
+
+/* acessa o elemento associado a um indice */
+getElement(0, [E|_], E).
+getElement(I, [_|T], R) :- X is I-1, getElement(X, T, R).
     
 numero(X) :- random(1, 4, X).
 
@@ -33,6 +37,4 @@ main :-
 	telaInicial(),nl,
 	desenhaEsfinge(),nl,
 	regras(),nl,
-    numero(X), write(X), nl,
-    crip(teste, X, Y), write(Y), nl,
 	halt(0).

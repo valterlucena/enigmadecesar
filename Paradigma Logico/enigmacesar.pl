@@ -39,7 +39,7 @@ selecao(1) :- regras().
 selecao(2) :- jogar().
 selecao(_) :- write('Voce nao leu direito as instrucoes. Reinicie o jogo!'), nl, halt(0).
 
-jogar() :- write('Buceta').
+jogar() :- write('Deu Certo').
 
 :- initialization(main).
 

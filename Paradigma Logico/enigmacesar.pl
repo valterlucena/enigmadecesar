@@ -23,7 +23,7 @@ crip(L1, D, L2) :-
 
 /* Aplica o deslocamento D */
 cifra(X, D, Y) :-
-	Y is X+D. 
+	Y is ((((X - 97) + D) mod 26) + 97). 
 
 /* acessa o elemento associado a um indice */
 getElement(0, [E|_], E).

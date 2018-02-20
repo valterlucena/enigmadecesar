@@ -10,6 +10,7 @@
 
 :- use_module(library(apply)).
 :- use_module(library(random)).
+:- use_module(library(ctypes)).
 
 :- [textos].
 :- [charadas].
@@ -22,7 +23,7 @@ crip(L1, D, L2) :-
 	string_to_list(L2, Y).
 
 /* Aplica o deslocamento D */
-cifra(X, D, Y) :- Y is ((((X - 97) + D) mod 26) + 97). 
+cifra(X, D, Y) :- string_to_list(C, X), is_alpha(C), Y is ((((X - 97) + D) mod 26) + 97). 
 
 /* acessa o elemento associado a um indice */
 getElement(0, [E|_], E).

@@ -23,7 +23,8 @@ crip(L1, D, L2) :-
 	string_to_list(L2, Y).
 
 /* Aplica o deslocamento D */
-cifra(X, D, Y) :- string_to_list(C, X), is_alpha(C), Y is ((((X - 97) + D) mod 26) + 97). 
+cifra(D, X, Y) :- string_to_list(C, [X]), (is_alpha(C) -> Y is ((((X - 97) + D) mod 26) + 97) ; Y is X).
+
 
 /* acessa o elemento associado a um indice */
 getElement(0, [E|_], E).

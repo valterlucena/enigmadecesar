@@ -30,18 +30,40 @@ cifra(D, X, Y) :- string_to_list(C, [X]), (is_alpha(C) -> Y is ((((X - 97) + D) 
 getElement(0, [E|_], E).
 getElement(I, [_|T], R) :- X is I-1, getElement(X, T, R).
     
-numero(X) :- random(1, 4, X).
+geraAleatorio(X) :- random(1, 4, X).
 
 iniciaJogo() :-
 	write('Pressione 1 para as regras ou 2 para jogar.'), nl,
 	read(Opcao), nl,
 	selecao(Opcao). 
-	
-selecao(1) :- regras().
+
+selecao(0) :- write('Voce encerrou o jogo'), nl, halt(0).
+selecao(1) :- regras(), nl, write('Pressione 2 para jogar, ou 0 para sair do jogo'), nl, read(Opcao), selecao(Opcao).
 selecao(2) :- jogar().
 selecao(_) :- write('Voce nao leu direito as instrucoes. Reinicie o jogo!'), nl, halt(0).
 
-jogar() :- write('Deu Certo').
+nivel(1,X) :- facil(X).
+nivel(2,X) :- medio(X).
+nivel(3,X) :- dificil(X).
+
+jogar() :- charadas(D),
+			geraAleatorio(IndiceCharada),
+			getElement(IndiceCharada,D,(Charada, Resposta)),
+			geraAleatorio(Chave),
+			crip(Charada, Chave, Criptografada),
+			writeln(Charada),
+			writeln(Criptografada),
+			writeln(Chave),
+			nivel(1,Facil),
+			writeln(Facil),
+			geraAleatorio(IndicePalavra),
+			getElement(IndicePalavra,Facil,Palavra),
+			geraAleatorio(ChavePalavra),
+			crip(Palavra, ChavePalavra, PalavraCrip),
+			write(Palavra),nl,
+			write(PalavraCrip),nl,
+			write(ChavePalavra).
+			
 
 :- initialization(main).
 

@@ -39,31 +39,44 @@ iniciaJogo() :-
 
 selecao(0) :- write('Voce encerrou o jogo'), nl, halt(0).
 selecao(1) :- regras(), nl, write('Pressione 2 para jogar, ou 0 para sair do jogo'), nl, read(Opcao), selecao(Opcao).
-selecao(2) :- jogar().
+selecao(2) :- jogar(1).
 selecao(_) :- write('Voce nao leu direito as instrucoes. Reinicie o jogo!'), nl, halt(0).
 
 nivel(1,X) :- facil(X).
 nivel(2,X) :- medio(X).
 nivel(3,X) :- dificil(X).
 
-jogar() :- charadas(D),
+jogar(X) :- X > 3, writeln('Digite 2 para jogar novamente ou 0 para encerrar o jogo.'),
+			read(Opcao), selecao(Opcao).
+			
+jogar(Nivel) :- mostraCharada(Nivel).
+
+mostraCharada(Nivel) :- charadas(D),
+			/* parte da charada */
 			geraAleatorio(IndiceCharada),
 			getElement(IndiceCharada,D,(Charada, Resposta)),
 			geraAleatorio(Chave),
 			crip(Charada, Chave, Criptografada),
-			writeln(Charada),
 			writeln(Criptografada),
-			writeln(Chave),
-			nivel(1,Facil),
-			writeln(Facil),
+			mostraPalavra(Nivel, 0).
+			
+			
+mostraPalavra(_, Controle) :- Controle > 2, halt(0).
+mostraPalavra(Nivel, Controle) :- nivel(Nivel,Palavras),
 			geraAleatorio(IndicePalavra),
-			getElement(IndicePalavra,Facil,Palavra),
+			getElement(IndicePalavra,Palavras,Palavra),
 			geraAleatorio(ChavePalavra),
 			crip(Palavra, ChavePalavra, PalavraCrip),
-			write(Palavra),nl,
 			write(PalavraCrip),nl,
-			write(ChavePalavra).
-			
+			write('Dica: Chave = '), write(ChavePalavra),nl,
+			read(Resposta),
+			result(Palavra, Resposta, R), writeln(R),
+			writeln(ChavePalavra),
+			mostraPalavra(Nivel,Controle+1).
+
+
+result(S1, S2, R) :- string_to_list(S1, R1), string_to_list(S2, R2), R1 =:= R2, R = "deu certo".
+result(_, _, 'nao deu').
 
 :- initialization(main).
 

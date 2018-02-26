@@ -58,25 +58,24 @@ mostraCharada(Nivel) :- charadas(D),
 			geraAleatorio(Chave),
 			crip(Charada, Chave, Criptografada),
 			writeln(Criptografada),
-			mostraPalavra(Nivel, 0).
+			mostraPalavra(Nivel, 1).
 			
 			
-mostraPalavra(_, Controle) :- Controle > 2, halt(0).
+mostraPalavra(_, Controle) :- Controle > 3, halt(0).
 mostraPalavra(Nivel, Controle) :- nivel(Nivel,Palavras),
 			geraAleatorio(IndicePalavra),
 			getElement(IndicePalavra,Palavras,Palavra),
 			geraAleatorio(ChavePalavra),
 			crip(Palavra, ChavePalavra, PalavraCrip),
-			write(PalavraCrip),nl,
+			write(Controle), write(') '), write(PalavraCrip),nl,
 			write('Dica: Chave = '), write(ChavePalavra),nl,
 			read(Resposta),
 			result(Palavra, Resposta, R), writeln(R),
-			writeln(ChavePalavra),
-			mostraPalavra(Nivel,Controle+1).
+			NovoControle is Controle + 1,
+			mostraPalavra(Nivel,NovoControle).
 
 
-result(S1, S2, R) :- string_to_list(S1, R1), string_to_list(S2, R2), R1 =:= R2, R = "deu certo".
-result(_, _, 'nao deu').
+result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 'oi'; R = 'cu').
 
 :- initialization(main).
 

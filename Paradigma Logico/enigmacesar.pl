@@ -51,7 +51,9 @@ jogar(X) :- X > 3, writeln('Digite 2 para jogar novamente ou 0 para encerrar o j
 			
 jogar(Nivel) :- mostraCharada(Nivel).
 
-mostraCharada(Nivel) :- charadas(D),
+
+mostraCharada(Nivel) :- Nivel > 3, halt(0).
+mostraCharada(Nivel) :- charadas(D), 
 			/* parte da charada */
 			geraAleatorio(IndiceCharada),
 			getElement(IndiceCharada,D,(Charada, Resposta)),
@@ -61,7 +63,7 @@ mostraCharada(Nivel) :- charadas(D),
 			mostraPalavra(Nivel, 1).
 			
 			
-mostraPalavra(_, Controle) :- Controle > 3, halt(0).
+mostraPalavra(Nivel, Controle) :- Controle > 3, NovoNivel is Nivel + 1, mostraCharada(NovoNivel).
 mostraPalavra(Nivel, Controle) :- nivel(Nivel,Palavras),
 			geraAleatorio(IndicePalavra),
 			getElement(IndicePalavra,Palavras,Palavra),
@@ -77,6 +79,7 @@ mostraPalavra(Nivel, Controle) :- nivel(Nivel,Palavras),
 
 result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 'oi'; R = 'cu').
 
+
 :- initialization(main).
 
 main :-
@@ -84,3 +87,6 @@ main :-
 	desenhaEsfinge(),nl,
 	iniciaJogo(), nl,
 	halt(0).
+	
+	
+

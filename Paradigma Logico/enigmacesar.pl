@@ -49,22 +49,22 @@ nivel(3,X) :- dificil(X).
 jogar(X) :- X > 3, writeln('Digite 2 para jogar novamente ou 0 para encerrar o jogo.'),
 			read(Opcao), selecao(Opcao).
 			
-jogar(Nivel) :- mostraCharada(Nivel).
+jogar(Nivel) :- mostraCharada(Nivel,_).
 
 
-mostraCharada(Nivel) :- Nivel > 3, halt(0).
-mostraCharada(Nivel) :- charadas(D), 
+mostraCharada(Nivel,Resposta) :- Nivel > 3, halt(0).
+mostraCharada(Nivel,_) :- charadas(D), 
 			/* parte da charada */
 			geraAleatorio(IndiceCharada),
 			getElement(IndiceCharada,D,(Charada, Resposta)),
 			geraAleatorio(Chave),
 			crip(Charada, Chave, Criptografada),
 			writeln(Criptografada),
-			mostraPalavra(Nivel, 1).
+			mostraPalavra(Nivel, 1, Resposta).
 			
 			
-mostraPalavra(Nivel, Controle) :- Controle > 3, NovoNivel is Nivel + 1, mostraCharada(NovoNivel).
-mostraPalavra(Nivel, Controle) :- nivel(Nivel,Palavras),
+mostraPalavra(Nivel, Controle,Resposta) :- Controle > 3, respostaCharada(Resposta), NovoNivel is Nivel + 1, mostraCharada(NovoNivel, Resposta).
+mostraPalavra(Nivel, Controle,_) :- nivel(Nivel,Palavras),
 			geraAleatorio(IndicePalavra),
 			getElement(IndicePalavra,Palavras,Palavra),
 			geraAleatorio(ChavePalavra),
@@ -74,11 +74,12 @@ mostraPalavra(Nivel, Controle) :- nivel(Nivel,Palavras),
 			read(Resposta),
 			result(Palavra, Resposta, R), writeln(R),
 			NovoControle is Controle + 1,
-			mostraPalavra(Nivel,NovoControle).
+			mostraPalavra(Nivel,NovoControle,_).
 
 
 result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 'oi'; R = 'cu').
 
+respostaCharada(Resposta):- read(R), writeln('Digite resposta: '), writeln(Resposta), result(Resposta, R, S), writeln(S).
 
 :- initialization(main).
 

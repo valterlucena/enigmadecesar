@@ -95,7 +95,7 @@ acertouPalavra(S, S, Controle, Chave, Charada) :-
 			Pedaco is ceiling(Controle * (Tamanho/3)),
 			Resto is (Tamanho - Pedaco),
 			sub_string(Charada, 0, Pedaco, Resto, SubCharada),
-			sub_string(Criptografada, Pedaco, NovoResto, 0, SubCrip),
+			sub_string(Criptografada, Pedaco, Resto, 0, SubCrip),
 			string_concat(SubCharada, SubCrip, Nova),
 			writeln(Nova).
 			

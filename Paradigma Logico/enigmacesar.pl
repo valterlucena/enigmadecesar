@@ -52,34 +52,55 @@ jogar(X) :- X > 3, writeln('Digite 2 para jogar novamente ou 0 para encerrar o j
 jogar(Nivel) :- mostraCharada(Nivel,_).
 
 
-mostraCharada(Nivel,Resposta) :- Nivel > 3, halt(0).
-mostraCharada(Nivel,_) :- charadas(D), 
+mostraCharada(Nivel, Respota) :- Nivel > 3, halt(0). /* colocar o ganhou */
+mostraCharada(Nivel, _) :- charadas(D), 
 			/* parte da charada */
 			geraAleatorio(IndiceCharada),
 			getElement(IndiceCharada,D,(Charada, Resposta)),
 			geraAleatorio(Chave),
 			crip(Charada, Chave, Criptografada),
 			writeln(Criptografada),
-			mostraPalavra(Nivel, 1, Resposta).
+			writeln(Charada), /*teste*/
+			mostraPalavra(Nivel, 1, Chave, Charada, Resposta).			
 			
-			
-mostraPalavra(Nivel, Controle,Resposta) :- Controle > 3, respostaCharada(Resposta), NovoNivel is Nivel + 1, mostraCharada(NovoNivel, Resposta).
-mostraPalavra(Nivel, Controle,_) :- nivel(Nivel,Palavras),
+mostraPalavra(Nivel, Controle, _, _, Resposta) :- Controle > 3, 
+			respostaCharada(Resposta), 
+			NovoNivel is Nivel + 1, 
+			mostraCharada(NovoNivel, Resposta).
+
+
+mostraPalavra(Nivel, Controle, ChaveCharada, Charada, _) :- nivel(Nivel,Palavras),
 			geraAleatorio(IndicePalavra),
 			getElement(IndicePalavra,Palavras,Palavra),
 			geraAleatorio(ChavePalavra),
 			crip(Palavra, ChavePalavra, PalavraCrip),
 			write(Controle), write(') '), write(PalavraCrip),nl,
 			write('Dica: Chave = '), write(ChavePalavra),nl,
-			read(Resposta),
-			result(Palavra, Resposta, R), writeln(R),
+			read(R1),
+			atom_string(R1, Resposta),
+			atom_string(Palavra, SPalavra),
+			acertouPalavra(SPalavra, Resposta, Controle, ChaveCharada, Charada),
 			NovoControle is Controle + 1,
-			mostraPalavra(Nivel,NovoControle,_).
+			mostraPalavra(Nivel, NovoControle, ChaveCharada, Charada, _).
 
 
-result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 'oi'; R = 'cu').
+result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 1; R = 0).
 
-respostaCharada(Resposta):- read(R), writeln('Digite resposta: '), writeln(Resposta), result(Resposta, R, S), writeln(S).
+acertouPalavra(S, S, Controle, Chave, Charada) :- 
+			crip(Charada, Chave, Criptografada),
+			string_length(Charada, Tamanho),
+			Pedaco is (Controle * (Tamanho // 3)),
+			Resto is Tamanho - Pedaco,
+			sub_string(Charada, 0, Pedaco, Resto, SubCharada),
+			sub_string(Criptografada, Pedaco, Resto, 0, SubCrip),
+			string_concat(SubCharada, SubCrip, Nova),
+			writeln(Nova).
+
+acertouCharada(S, S, R) :- R = 'to do!!'.			
+
+respostaCharada(Resposta):- write('Digite resposta: '), 
+			read(R), atom_string(R, Palpite),
+			result(Palpite, Resposta, S), writeln(S).
 
 :- initialization(main).
 

@@ -30,7 +30,8 @@ cifra(D, X, Y) :- string_to_list(C, [X]), (is_alpha(C) -> Y is ((((X - 97) + D) 
 getElement(0, [E|_], E).
 getElement(I, [_|T], R) :- X is I-1, getElement(X, T, R).
     
-geraAleatorio(X) :- random(1, 4, X).
+geraChave(X) :- random(1, 4, X).
+geraIndice(Limite, Indice) :- random(0, Limite, Indice).
 
 iniciaJogo() :-
 	write('Pressione 1 para as regras ou 2 para jogar.'), nl,
@@ -53,14 +54,14 @@ jogar(Nivel) :- mostraCharada(Nivel,_).
 
 
 mostraCharada(Nivel, Respota) :- Nivel > 3, halt(0). /* colocar o ganhou */
-mostraCharada(Nivel, _) :- charadas(D), 
+mostraCharada(Nivel, _) :- charadas(D), length(D, Limite),
 			/* parte da charada */
-			geraAleatorio(IndiceCharada),
+			geraIndice(Limite, IndiceCharada),
 			getElement(IndiceCharada,D,(Charada, Resposta)),
-			geraAleatorio(Chave),
+			geraChave(Chave),
 			crip(Charada, Chave, Criptografada),
+			write('Nivel '), write(Nivel), nl, nl,
 			writeln(Criptografada),
-			writeln(Charada), /*teste*/
 			mostraPalavra(Nivel, 1, Chave, Charada, Resposta).			
 			
 mostraPalavra(Nivel, Controle, _, _, Resposta) :- Controle > 3, 
@@ -70,11 +71,13 @@ mostraPalavra(Nivel, Controle, _, _, Resposta) :- Controle > 3,
 
 
 mostraPalavra(Nivel, Controle, ChaveCharada, Charada, _) :- nivel(Nivel,Palavras),
-			geraAleatorio(IndicePalavra),
+			length(Palavras, Limite),
+			geraIndice(Limite, IndicePalavra),
 			getElement(IndicePalavra,Palavras,Palavra),
-			geraAleatorio(ChavePalavra),
+			geraChave(ChavePalavra),
 			crip(Palavra, ChavePalavra, PalavraCrip),
-			write(Controle), write(') '), write(PalavraCrip),nl,
+			Reverte is (0 - ChavePalavra), crip(PalavraCrip, Reverte, Resp), /*apagar depois, e a resposta v tbm*/
+			write(Controle), write(') '), write(PalavraCrip), write(' '), write(Resp), nl,
 			write('Dica: Chave = '), write(ChavePalavra),nl,
 			read(R1),
 			atom_string(R1, Resposta),
@@ -89,18 +92,23 @@ result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 
 acertouPalavra(S, S, Controle, Chave, Charada) :- 
 			crip(Charada, Chave, Criptografada),
 			string_length(Charada, Tamanho),
-			Pedaco is (Controle * (Tamanho // 3)),
-			Resto is Tamanho - Pedaco,
+			Pedaco is ceiling(Controle * (Tamanho/3)),
+			Resto is (Tamanho - Pedaco),
 			sub_string(Charada, 0, Pedaco, Resto, SubCharada),
-			sub_string(Criptografada, Pedaco, Resto, 0, SubCrip),
+			sub_string(Criptografada, Pedaco, NovoResto, 0, SubCrip),
 			string_concat(SubCharada, SubCrip, Nova),
 			writeln(Nova).
+			
+acertouPalavra(S, _, _, _, _) :- writeln('Voce perdeu!. Digite 0 para encerrar ou 2 para jogar novamente.'),
+			read(Opcao), selecao(Opcao).
 
-acertouCharada(S, S, R) :- R = 'to do!!'.			
+acertouCharada(S, S, R) :- R = 'to do!!'.
+acertouCharada(S, _, _) :- writeln('Voce perdeu!. Digite 0 para encerrar ou 2 para jogar novamente.'),
+			read(Opcao), selecao(Opcao).
 
 respostaCharada(Resposta):- write('Digite resposta: '), 
 			read(R), atom_string(R, Palpite),
-			result(Palpite, Resposta, S), writeln(S).
+			acertouCharada(Palpite, Resposta, S), writeln(S).
 
 :- initialization(main).
 

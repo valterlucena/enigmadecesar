@@ -50,27 +50,30 @@ nivel(3,X) :- dificil(X).
 jogar(X) :- X > 3, writeln('Digite 2 para jogar novamente ou 0 para encerrar o jogo.'),
 			read(Opcao), selecao(Opcao).
 			
-jogar(Nivel) :- mostraCharada(Nivel,_).
+jogar(Nivel) :- mostraCharada(Nivel,RespostaDaCharada).
 
 
-mostraCharada(Nivel, Respota) :- Nivel > 3, halt(0). /* colocar o ganhou */
-mostraCharada(Nivel, _) :- charadas(D), length(D, Limite),
-			/* parte da charada */
+mostraCharada(Nivel, _) :- Nivel > 3, writeln('Parabens! Voce finalizou o jogo!'), halt(0).
+mostraCharada(Nivel, RespostaDaCharada) :- charadas(D), length(D, Limite),
 			geraIndice(Limite, IndiceCharada),
-			getElement(IndiceCharada,D,(Charada, Resposta)),
+			getElement(IndiceCharada,D,(Charada, RespostaDaCharada)),
 			geraChave(Chave),
 			crip(Charada, Chave, Criptografada),
 			write('Nivel '), write(Nivel), nl, nl,
 			writeln(Criptografada),
-			mostraPalavra(Nivel, 1, Chave, Charada, Resposta).			
+			mostraPalavra(Nivel, 1, Chave, Charada, RespostaDaCharada).			
 			
-mostraPalavra(Nivel, Controle, _, _, Resposta) :- Controle > 3, 
-			respostaCharada(Resposta), 
+mostraPalavra(Nivel, Controle, Chave, Charada, RespostaDaCharada) :- Controle > 3, 
+			write('Digite resposta: '), writeln(RespostaDaCharada), /*apagar resposta da charada*/
+			read(R1), 
+			atom_string(R1, SR),
+			atom_string(RespostaDaCharada, SResposta),
+			acertouCharada(SResposta, SR),
 			NovoNivel is Nivel + 1, 
-			mostraCharada(NovoNivel, Resposta).
+			mostraCharada(NovoNivel, _).
 
 
-mostraPalavra(Nivel, Controle, ChaveCharada, Charada, _) :- nivel(Nivel,Palavras),
+mostraPalavra(Nivel, Controle, ChaveCharada, Charada, RespostaDaCharada) :- nivel(Nivel,Palavras),
 			length(Palavras, Limite),
 			geraIndice(Limite, IndicePalavra),
 			getElement(IndicePalavra,Palavras,Palavra),
@@ -80,11 +83,11 @@ mostraPalavra(Nivel, Controle, ChaveCharada, Charada, _) :- nivel(Nivel,Palavras
 			write(Controle), write(') '), write(PalavraCrip), write(' '), write(Resp), nl,
 			write('Dica: Chave = '), write(ChavePalavra),nl,
 			read(R1),
-			atom_string(R1, Resposta),
+			atom_string(R1, RespostaDaPalavra),
 			atom_string(Palavra, SPalavra),
-			acertouPalavra(SPalavra, Resposta, Controle, ChaveCharada, Charada),
+			acertouPalavra(SPalavra, RespostaDaPalavra, Controle, ChaveCharada, Charada),
 			NovoControle is Controle + 1,
-			mostraPalavra(Nivel, NovoControle, ChaveCharada, Charada, _).
+			mostraPalavra(Nivel, NovoControle, ChaveCharada, Charada, RespostaDaCharada).
 
 
 result(S1, S2, R) :- atom_string(S1, R1), atom_string(S2, R2), (R1 == R2 -> R = 1; R = 0).
@@ -102,13 +105,10 @@ acertouPalavra(S, S, Controle, Chave, Charada) :-
 acertouPalavra(S, _, _, _, _) :- writeln('Voce perdeu!. Digite 0 para encerrar ou 2 para jogar novamente.'),
 			read(Opcao), selecao(Opcao).
 
-acertouCharada(S, S, R) :- R = 'to do!!'.
-acertouCharada(S, _, _) :- writeln('Voce perdeu!. Digite 0 para encerrar ou 2 para jogar novamente.'),
+acertouCharada(S, S) :- writeln("Parabens!"), nl.
+acertouCharada(S, _) :- writeln('Voce perdeu!. Digite 0 para encerrar ou 2 para jogar novamente.'),
 			read(Opcao), selecao(Opcao).
-
-respostaCharada(Resposta):- write('Digite resposta: '), 
-			read(R), atom_string(R, Palpite),
-			acertouCharada(Palpite, Resposta, S), writeln(S).
+			
 
 :- initialization(main).
 

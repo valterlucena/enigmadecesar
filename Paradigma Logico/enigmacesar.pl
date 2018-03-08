@@ -64,7 +64,7 @@ mostraCharada(Nivel, RespostaDaCharada) :- charadas(D), length(D, Limite),
 			mostraPalavra(Nivel, 1, Chave, Charada, RespostaDaCharada).			
 			
 mostraPalavra(Nivel, Controle, Chave, Charada, RespostaDaCharada) :- Controle > 3, 
-			write('Digite resposta: '), writeln(RespostaDaCharada), /*apagar resposta da charada*/
+			write('Digite resposta: '), 
 			read(R1), 
 			atom_string(R1, SR),
 			atom_string(RespostaDaCharada, SResposta),
@@ -80,7 +80,7 @@ mostraPalavra(Nivel, Controle, ChaveCharada, Charada, RespostaDaCharada) :- nive
 			geraChave(ChavePalavra),
 			crip(Palavra, ChavePalavra, PalavraCrip),
 			Reverte is (0 - ChavePalavra), crip(PalavraCrip, Reverte, Resp), /*apagar depois, e a resposta v tbm*/
-			write(Controle), write(') '), write(PalavraCrip), write(' '), write(Resp), nl,
+			write(Controle), write(') '), write(PalavraCrip), nl,
 			write('Dica: Chave = '), write(ChavePalavra),nl,
 			read(R1),
 			atom_string(R1, RespostaDaPalavra),

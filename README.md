@@ -23,7 +23,7 @@ g++ enigmacesar.cpp -o enigmacesar
 ##
 ```sh
 cd 'Paradigma Funcional'/
-g++ enigmacesar.hs
+ghc enigmacesar.hs
 ./enigmacesar
 ```
 ##### Prolog

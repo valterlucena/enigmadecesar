@@ -11,25 +11,25 @@ O jogo enigma de césar tem o objetivo de estimular o jogador a acertas charadas
 ##### Mas como faço para descriptografar a charadas? 
 Ao longo de cada nível, é fornecido aleatoriamente ao jogador, palavras criptografas com sua respectiva chave para descriptografá-la e a cada acerto, é liberada uma parte da frase criptografada. E ao final, quando o enigma está totalmente descriptografado o jogador tem a chance de responder ao enigma que a esfinge propôs.
 
-### Regras:
-
-  1. Para começar o jogo digite 1, se caso quiser encerrar, digite 2. 
-  2. Outras regras :)
-
-### Como rodar:
+### Como executar:
 ##### C++
 ##
 ```sh
-Digite os comandos
+cd 'Paradigma Imperativo'/
+g++ enigmacesar.cpp -o enigmacesar
+./enigmacesar
 ```
 ##### Haskell
 ##
 ```sh
-Digite os comandos
+cd 'Paradigma Funcional'/
+g++ enigmacesar.hs
+./enigmacesar
 ```
 ##### Prolog
 ##
 ```sh
-Digite os comandos
+cd 'Paradigma Logico'/
+swipl enigmacesar.pl
 ```
 
